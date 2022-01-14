@@ -21,4 +21,10 @@ router.get("/:pid", (req, res, next) => {
   res.json({ place });
 });
 
+router.get("/user/:uid", (req, res, next) => {
+  const userId = req.params.uid;
+  const place = PLACES.find((p) => p.creator === userId);
+  res.json({ place });
+});
+
 export default router;
