@@ -18,13 +18,27 @@ const PLACES = [
 router.get("/:pid", (req, res, next) => {
   const placeId = req.params.pid;
   const place = PLACES.find((p) => p.id === placeId);
-  res.json({ place });
+
+  if (!place) {
+    const error = new Error("Could not find a place for the provided id.");
+    error.code = 404;
+    next(error);
+  } else {
+    res.json({ place });
+  }
 });
 
 router.get("/user/:uid", (req, res, next) => {
   const userId = req.params.uid;
   const place = PLACES.find((p) => p.creator === userId);
-  res.json({ place });
+
+  if (!place) {
+    const error = new Error("Could not find a place for the provided user id.");
+    error.code = 404;
+    next(error);
+  } else {
+    res.json({ place });
+  }
 });
 
 export default router;
