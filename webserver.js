@@ -5,6 +5,8 @@ import placesRoutes from "./routes/places-routes.js";
 
 const webserver = express();
 
+webserver.use(bodyParser.json());
+
 webserver.use("/api/places", placesRoutes); // => /api/places...
 
 webserver.use((error, req, res, next) => {
