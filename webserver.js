@@ -7,7 +7,7 @@ const webserver = express();
 
 webserver.use(bodyParser.json());
 
-webserver.use("/api/places", placesRoutes); // => /api/places...
+webserver.use("/api/places", placesRoutes);
 
 webserver.use((error, req, res, next) => {
   if (res.headerSent) {
