@@ -1,4 +1,6 @@
 import { v4 as uuidV4 } from "uuid";
+import { validationResult } from "express-validator";
+
 import HttpError from "../models/http-error.js";
 
 let PLACES = [
@@ -37,16 +39,20 @@ const getPlacesByUserId = (req, res, next) => {
   });
 
   if (!places && !places.length === 0) {
-    next(
-      new HttpError("Could not find places for the provided user id.", 404)
-    );
+    next(new HttpError("Could not find places for the provided user id.", 404));
   } else {
     res.json({ places });
   }
 };
 
 const createPlace = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+
   const { title, description, coordinates, address, creator } = req.body;
+
   const createdPlace = {
     id: uuidV4(),
     title: title,
