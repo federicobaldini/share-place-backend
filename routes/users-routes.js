@@ -1,9 +1,13 @@
 import { Router } from "express";
+
+import { getUsers, signup, login } from "../controllers/users-controller.js";
+
 const router = Router();
 
-router.get("/", (req, res, next) => {
-  console.log("GET request in users");
-  res.json({ message: "It works!" });
-});
+router.get("/", getUsers);
+
+router.post("/signup", signup);
+
+router.post("/login", login);
 
 export default router;
