@@ -1,9 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
+import fs from "fs";
+import mongoose from "mongoose";
 
 import placesRoutes from "./routes/places-routes.js";
 import usersRoutes from "./routes/users-routes.js";
 import HttpError from "./models/http-error.js";
+
+const privateKey = fs.readFileSync("mongodb-key.txt", "utf8");
 
 const webserver = express();
 
@@ -25,4 +29,15 @@ webserver.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
-webserver.listen(5000);
+mongoose
+  .connect(
+    "mongodb+srv://federico:" +
+      privateKey +
+      "@cluster0.mswkp.mongodb.net/places?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    webserver.listen(5000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
