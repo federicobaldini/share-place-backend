@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 
 import HttpError from "../models/http-error.js";
 import getCoordsForAddress from "../utils/location.js";
+import Place from "../models/place.js";
 
 let PLACES = [
   {
@@ -63,16 +64,25 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  const createdPlace = {
-    id: uuidV4(),
+  const createdPlace = new Place({
     title: title,
     description: description,
-    location: coordinates,
+    image:
+      "https://static.fanpage.it/wp-content/uploads/sites/10/2021/04/empire-state-building-1081929_1920-1200x675.jpg",
     address: address,
+    location: coordinates,
     creator: creator,
-  };
+  });
 
-  PLACES.push(createdPlace);
+  try {
+    await createdPlace.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Creating place failed, please try again.",
+      500
+    );
+    return next(error);
+  }
 
   res.status(201).json(createdPlace);
 };
