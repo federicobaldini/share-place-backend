@@ -4,6 +4,7 @@ import { validationResult } from "express-validator";
 import HttpError from "../models/http-error.js";
 import getCoordsForAddress from "../utils/location.js";
 import Place from "../models/place.js";
+import place from "../models/place.js";
 
 let PLACES = [
   {
@@ -39,23 +40,38 @@ const getPlaceById = async (req, res, next) => {
       404
     );
     return next(error);
-  } else {
-    res.json({ place: place.toObject({ getters: true }) });
   }
+
+  res.json({ place: place.toObject({ getters: true }) });
 };
 
-const getPlacesByUserId = (req, res, next) => {
+const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
-  const places = PLACES.filter((p) => {
-    return p.creator === userId;
-  });
-
-  if (!places && !places.length === 0) {
-    next(new HttpError("Could not find places for the provided user id.", 404));
-  } else {
-    res.json({ places });
+  let places;
+  try {
+    places = await Place.find({ creator: userId });
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching places failed, please try again later.",
+      500
+    );
+    return next(error);
   }
+
+  if (!places || places.length === 0) {
+    const error = new HttpError(
+      "Could not find places for the provided user id.",
+      404
+    );
+    return next(error);
+  }
+
+  res.json({
+    places: places.map((place) => {
+      return place.toObject({ getters: true });
+    }),
+  });
 };
 
 const createPlace = async (req, res, next) => {
