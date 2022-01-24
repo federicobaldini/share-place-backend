@@ -4,7 +4,6 @@ import { validationResult } from "express-validator";
 import HttpError from "../models/http-error.js";
 import getCoordsForAddress from "../utils/location.js";
 import Place from "../models/place.js";
-import place from "../models/place.js";
 
 let PLACES = [
   {
