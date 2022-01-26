@@ -1,4 +1,3 @@
-import { v4 as uuidV4 } from "uuid";
 import { validationResult } from "express-validator";
 
 import HttpError from "../models/http-error.js";
