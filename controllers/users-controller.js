@@ -3,15 +3,6 @@ import { validationResult } from "express-validator";
 import HttpError from "../models/http-error.js";
 import User from "../models/user.js";
 
-let USERS = [
-  {
-    id: "u1",
-    name: "Federico Baldini",
-    email: "test@test.com",
-    password: "test",
-  },
-];
-
 const getUsers = async (req, res, next) => {
   let users;
   try {

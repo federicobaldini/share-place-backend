@@ -6,20 +6,6 @@ import getCoordsForAddress from "../utils/location.js";
 import Place from "../models/place.js";
 import User from "../models/user.js";
 
-let PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "One of the most famous sky scrapers in the world!",
-    location: {
-      lat: 40.7484474,
-      lng: -73.9871516,
-    },
-    address: "20 W 34th St, New York, NY 10001",
-    creator: "u1",
-  },
-];
-
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
 
@@ -178,6 +164,9 @@ const deletePlace = async (req, res, next) => {
 
   let place;
   try {
+    /*
+     * Populate will automatically replace the specified path in the document, with document(s) from other collection(s).
+     */
     place = await Place.findById(placeId).populate("creator");
   } catch (err) {
     const error = new HttpError(
