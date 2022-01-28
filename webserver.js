@@ -13,6 +13,16 @@ const webserver = express();
 
 webserver.use(bodyParser.json());
 
+webserver.use((error, req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-Width, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  next();
+});
+
 webserver.use("/api/places", placesRoutes);
 webserver.use("/api/users", usersRoutes);
 
