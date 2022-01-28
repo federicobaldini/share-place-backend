@@ -13,7 +13,7 @@ const webserver = express();
 
 webserver.use(bodyParser.json());
 
-webserver.use((error, req, res, next) => {
+webserver.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
