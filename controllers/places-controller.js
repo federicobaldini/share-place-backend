@@ -110,6 +110,7 @@ const createPlace = async (req, res, next) => {
     user.places.push(createdPlace);
     user.save({ session: sess });
     await sess.commitTransaction();
+    await sess.endSession();
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
@@ -188,6 +189,7 @@ const deletePlace = async (req, res, next) => {
     place.creator.places.pull(place);
     place.creator.save({ session: sess });
     await sess.commitTransaction();
+    await sess.endSession();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not delete place.",
