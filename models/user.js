@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
 
 const Schema = mongoose.Schema;
 
@@ -10,7 +9,5 @@ const userSchema = new Schema({
   image: { type: String, required: true },
   places: [{ type: mongoose.Types.ObjectId, required: true, ref: "Place" }],
 });
-
-userSchema.plugin(uniqueValidator);
 
 export default mongoose.model("User", userSchema);
