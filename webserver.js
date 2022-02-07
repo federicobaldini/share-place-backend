@@ -1,6 +1,8 @@
+import fs from "fs";
+import path from "path";
+
 import express from "express";
 import bodyParser from "body-parser";
-import fs from "fs";
 import mongoose from "mongoose";
 
 import placesRoutes from "./routes/places-routes.js";
@@ -12,6 +14,8 @@ const privateKey = fs.readFileSync("mongodb-key.txt", "utf8");
 const webserver = express();
 
 webserver.use(bodyParser.json());
+
+webserver.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 webserver.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -32,6 +36,11 @@ webserver.use((req, res, next) => {
 });
 
 webserver.use((error, req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
   if (res.headerSent) {
     return next(error);
   }
