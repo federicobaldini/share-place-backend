@@ -80,8 +80,7 @@ const createPlace = async (req, res, next) => {
   const createdPlace = new Place({
     title: title,
     description: description,
-    image:
-      "https://static.fanpage.it/wp-content/uploads/sites/10/2021/04/empire-state-building-1081929_1920-1200x675.jpg",
+    image: req.file.path,
     address: address,
     location: coordinates,
     creator: creator,
