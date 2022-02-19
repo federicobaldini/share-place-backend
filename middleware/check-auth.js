@@ -1,9 +1,6 @@
 import jwt from "jsonwebtoken";
-import fs from "fs";
 
 import HttpError from "../models/http-error.js";
-
-const privateKey = fs.readFileSync("private-key.txt", "utf8");
 
 export default (req, res, next) => {
   if (req.method === "OPTIONS") {
@@ -14,7 +11,7 @@ export default (req, res, next) => {
     if (!token) {
       throw new Error("Authentication failed!");
     }
-    const decodedToken = jwt.verify(token, privateKey);
+    const decodedToken = jwt.verify(token, process.env.JWT_KEY);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {

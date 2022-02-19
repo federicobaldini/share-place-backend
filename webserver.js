@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 
 import express from "express";
@@ -9,13 +8,14 @@ import placesRoutes from "./routes/places-routes.js";
 import usersRoutes from "./routes/users-routes.js";
 import HttpError from "./models/http-error.js";
 
-const privateKey = fs.readFileSync("mongodb-key.txt", "utf8");
-
 const webserver = express();
 
 webserver.use(bodyParser.json());
 
-webserver.use("/uploads/images", express.static(path.join("uploads", "images")));
+webserver.use(
+  "/uploads/images",
+  express.static(path.join("uploads", "images"))
+);
 
 webserver.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -50,9 +50,13 @@ webserver.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://federico:" +
-      privateKey +
-      "@cluster0.mswkp.mongodb.net/places?retryWrites=true&w=majority"
+    "mongodb+srv://" +
+      process.env.DB_USER +
+      ":" +
+      process.env.DB_PASSWORD +
+      "@cluster0.mswkp.mongodb.net/" +
+      process.env.DB_NAME +
+      "?retryWrites=true&w=majority"
   )
   .then(() => {
     webserver.listen(5000);

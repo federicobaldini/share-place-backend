@@ -1,12 +1,9 @@
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import fs from "fs";
 
 import HttpError from "../models/http-error.js";
 import User from "../models/user.js";
-
-const privateKey = fs.readFileSync("private-key.txt", "utf8");
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -85,7 +82,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      privateKey,
+      process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -150,7 +147,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      privateKey,
+      process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
   } catch (err) {
