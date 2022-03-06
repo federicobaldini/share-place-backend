@@ -8,6 +8,24 @@ import getCoordsForAddress from "../utils/location.js";
 import Place from "../models/place.js";
 import User from "../models/user.js";
 
+const getPlaces = async (req, res, next) => {
+  let places;
+  try {
+    places = await Place.find();
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching places failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({
+    places: places.map((place) => {
+      return place.toObject({ getters: true });
+    }),
+  });
+};
+
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
 
@@ -227,12 +245,14 @@ const deletePlace = async (req, res, next) => {
   res.status(200).json({ message: "Deleted place." });
 };
 
+const _getPlaces = getPlaces;
 const _getPlaceById = getPlaceById;
 const _getPlacesByUserId = getPlacesByUserId;
 const _createPlace = createPlace;
 const _updatePlace = updatePlace;
 const _deletePlace = deletePlace;
 
+export { _getPlaces as getPlaces };
 export { _getPlaceById as getPlaceById };
 export { _getPlacesByUserId as getPlacesByUserId };
 export { _createPlace as createPlace };

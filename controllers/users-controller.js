@@ -11,7 +11,7 @@ const getUsers = async (req, res, next) => {
     users = await User.find({}, "-password");
   } catch (err) {
     const error = new HttpError(
-      "Fetching user failed, please try again later.",
+      "Fetching users failed, please try again later.",
       500
     );
     return next(error);

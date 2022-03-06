@@ -2,6 +2,7 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import {
+  getPlaces,
   getPlaceById,
   getPlacesByUserId,
   createPlace,
@@ -12,6 +13,8 @@ import fileUpload from "../middleware/file-upload.js";
 import checkAuth from "../middleware/check-auth.js";
 
 const router = Router();
+
+router.get("/", getPlaces);
 
 router.get("/:pid", getPlaceById);
 
