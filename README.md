@@ -1,4 +1,4 @@
-# meet-up-frontend
+# share-place-backend
 
 A service for a web application that create posts on visited places and share them with other users. Made using NodeJS, Express, MongoDB and Mongoose.
 
